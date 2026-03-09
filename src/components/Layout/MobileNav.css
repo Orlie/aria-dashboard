@@ -1,0 +1,44 @@
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--mobile-nav-height);
+    background: var(--aria-card-bg);
+    border-top: 1px solid var(--aria-gray-border);
+    z-index: 20;
+  }
+
+  .mobile-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    color: var(--aria-gray-light);
+    font-size: 10px;
+    font-weight: 600;
+    transition: color 0.15s ease;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--aria-yellow);
+  }
+
+  .mobile-nav-icon {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-nav-label {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+}

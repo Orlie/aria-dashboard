@@ -1,0 +1,11 @@
+.chart-container {
+  background: var(--aria-card-bg);
+  border: 1px solid var(--aria-gray-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.chart-container .recharts-text {
+  fill: var(--aria-gray-text);
+  font-size: 12px;
+}

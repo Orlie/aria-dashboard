@@ -1,0 +1,92 @@
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 380px;
+  pointer-events: none;
+}
+
+.toast {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 40px 12px 16px;
+  border-radius: var(--radius-md);
+  background: var(--aria-card-bg);
+  border: 1px solid var(--aria-gray-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-size: 13px;
+  line-height: 1.4;
+  animation: toast-slide-in 0.25s ease-out;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.toast-success { border-left: 3px solid var(--aria-green); }
+.toast-error   { border-left: 3px solid var(--aria-red); }
+.toast-info    { border-left: 3px solid var(--aria-blue); }
+.toast-warning { border-left: 3px solid var(--aria-orange); }
+
+.toast-icon { flex-shrink: 0; margin-top: 1px; }
+.toast-icon-success { color: var(--aria-green); }
+.toast-icon-error   { color: var(--aria-red); }
+.toast-icon-info    { color: var(--aria-blue); }
+.toast-icon-warning { color: var(--aria-orange); }
+
+.toast-message {
+  flex: 1;
+  color: var(--aria-white);
+}
+
+.toast-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: var(--aria-gray-light);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: var(--radius-xs);
+  transition: color 0.15s ease;
+}
+
+.toast-close:hover {
+  color: var(--aria-white);
+}
+
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  animation: toast-countdown linear forwards;
+}
+
+.toast-progress-success { background: var(--aria-green); }
+.toast-progress-error   { background: var(--aria-red); }
+.toast-progress-info    { background: var(--aria-blue); }
+.toast-progress-warning { background: var(--aria-orange); }
+
+@keyframes toast-slide-in {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes toast-countdown {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+@media (max-width: 480px) {
+  .toast-container {
+    left: 16px;
+    right: 16px;
+    bottom: calc(var(--mobile-nav-height) + 16px);
+    max-width: none;
+  }
+}

@@ -1,0 +1,51 @@
+.drafter-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.drafter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drafter-preview {
+  background: var(--aria-surface);
+  border: 1px solid var(--aria-gray-border);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.drafter-preview-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--aria-gray-text);
+  margin-bottom: 12px;
+}
+
+.drafter-preview-text {
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.drafter-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.copied-badge {
+  font-size: 12px;
+  color: var(--aria-green);
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .drafter-container {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,82 @@
+.lead-card {
+  background: var(--aria-card-bg);
+  border: 1px solid var(--aria-gray-border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lead-card:hover {
+  border-color: var(--aria-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.lead-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.lead-card-brand {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lead-card-contact {
+  font-size: 12px;
+  color: var(--aria-gray-text);
+  margin-bottom: 8px;
+}
+
+.lead-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+}
+
+.lead-card-meta {
+  font-size: 11px;
+  color: var(--aria-gray-light);
+}
+
+.lead-card {
+  position: relative;
+}
+
+.lead-card-status-select {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 4px 24px 4px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--aria-surface);
+  border: 1px solid var(--aria-gray-border);
+  border-radius: var(--radius-xs);
+  color: var(--aria-yellow);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23a8a8a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+
+.lead-card:hover .lead-card-status-select {
+  opacity: 1;
+}
+
+.lead-card-status-select:hover {
+  border-color: var(--aria-yellow);
+}
+
+.lead-card-status-select:focus {
+  opacity: 1;
+  border-color: var(--aria-yellow);
+  outline: none;
+}
