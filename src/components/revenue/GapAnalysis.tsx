@@ -20,15 +20,15 @@ function GapAnalysis({ snapshot }: GapAnalysisProps) {
         <p style={{ fontSize: 15, marginBottom: 4 }}>
           You need <strong style={{ color: 'var(--aria-yellow)' }}>{clientsNeeded} more client{clientsNeeded !== 1 ? 's' : ''}</strong> at{' '}
           <strong style={{ color: 'var(--aria-yellow)' }}>{formatCurrency(Math.round(avgRevenue))}</strong> average to reach{' '}
-          <strong>₱1M/month</strong>
+          <strong>$1M/month</strong>
         </p>
       ) : snapshot.gap <= 0 ? (
         <p style={{ fontSize: 15, marginBottom: 4, color: 'var(--aria-green)' }}>
-          <strong>Target reached!</strong> You have exceeded ₱1M/month.
+          <strong>Target reached!</strong> You have exceeded $1M/month.
         </p>
       ) : (
         <p style={{ fontSize: 15, marginBottom: 4, color: 'var(--aria-gray-text)' }}>
-          Add clients to begin tracking your gap to ₱1M/month.
+          Add clients to begin tracking your gap to $1M/month.
         </p>
       )}
 

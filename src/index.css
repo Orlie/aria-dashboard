@@ -668,6 +668,11 @@ select {
   border-radius: 999px;
 }
 
+.pipeline-column--drag-over {
+  background: rgba(255, 235, 3, 0.05);
+  border: 1px solid rgba(255, 235, 3, 0.3);
+}
+
 .pipeline-cards {
   display: flex;
   flex-direction: column;
@@ -1089,6 +1094,24 @@ select {
 }
 
 /* ============================================================
+   FILE DROP ZONE (KaloData Import)
+   ============================================================ */
+
+.file-drop-zone {
+  border: 2px dashed #333;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.file-drop-zone:hover,
+.file-drop-zone.drag-over {
+  border-color: var(--aria-yellow);
+  background: rgba(255, 235, 3, 0.03);
+}
+
+/* ============================================================
    UTILITIES
    ============================================================ */
 
@@ -1108,3 +1131,49 @@ select {
 .mb-8 { margin-bottom: 8px; }
 .mb-16 { margin-bottom: 16px; }
 .mb-24 { margin-bottom: 24px; }
+
+/* ===================== iOS / iPhone Fixes ===================== */
+
+/* Prevent text size inflation on rotate */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Smooth momentum scrolling on iOS */
+.main-content,
+[data-scroll],
+.overflow-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area insets for iPhone notch / Dynamic Island */
+.mobile-nav {
+  padding-bottom: env(safe-area-inset-bottom, 12px);
+  height: calc(64px + env(safe-area-inset-bottom, 0px));
+}
+
+.main-content {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Minimum tap target size (Apple recommends 44×44px) */
+button,
+a,
+[role="button"],
+.nav-item {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Remove iOS input styling */
+input,
+textarea,
+select {
+  -webkit-appearance: none;
+  border-radius: 8px;
+}
+
+/* Fix iOS bounce overscroll */
+body {
+  overscroll-behavior: none;
+}

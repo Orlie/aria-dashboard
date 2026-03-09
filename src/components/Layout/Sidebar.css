@@ -109,6 +109,28 @@
   margin-left: auto;
 }
 
+.sidebar-sync-status {
+  padding: 8px 16px;
+  font-size: 11px;
+  color: var(--aria-gray-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid var(--aria-gray-border);
+}
+
+.sidebar-sync-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aria-green);
+  flex-shrink: 0;
+}
+
+.sidebar-sync-dot.disconnected {
+  background: #333;
+}
+
 @media (max-width: 767px) {
   .sidebar {
     display: none;

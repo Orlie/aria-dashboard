@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import type { Lead, LeadStatus } from '../../types'
 import { LEAD_STATUS_LABELS } from '../../types'
+import { useLeadsStore } from '../../stores/leads-store'
 import LeadCard from './LeadCard'
 
 interface LeadPipelineProps {
@@ -19,8 +21,28 @@ const PIPELINE_COLUMNS: LeadStatus[] = [
 ]
 
 function LeadPipeline({ leads, onSelectLead }: LeadPipelineProps) {
+  const [dragOverColumn, setDragOverColumn] = useState<LeadStatus | null>(null)
+
   const getLeadsByStatus = (status: LeadStatus): Lead[] =>
     leads.filter((l) => l.status === status)
+
+  const handleDragOver = (e: React.DragEvent, status: LeadStatus) => {
+    e.preventDefault()
+    setDragOverColumn(status)
+  }
+
+  const handleDragLeave = () => {
+    setDragOverColumn(null)
+  }
+
+  const handleDrop = (e: React.DragEvent, status: LeadStatus) => {
+    e.preventDefault()
+    const leadId = e.dataTransfer.getData('leadId')
+    if (leadId) {
+      useLeadsStore.getState().updateLeadStatus(leadId, status)
+    }
+    setDragOverColumn(null)
+  }
 
   return (
     <div className="pipeline-container">
@@ -28,7 +50,13 @@ function LeadPipeline({ leads, onSelectLead }: LeadPipelineProps) {
         const columnLeads = getLeadsByStatus(status)
 
         return (
-          <div className="pipeline-column" key={status}>
+          <div
+            className={`pipeline-column${dragOverColumn === status ? ' pipeline-column--drag-over' : ''}`}
+            key={status}
+            onDragOver={(e) => handleDragOver(e, status)}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleDrop(e, status)}
+          >
             <div className="pipeline-column-header">
               <span className="pipeline-column-title">
                 {LEAD_STATUS_LABELS[status]}

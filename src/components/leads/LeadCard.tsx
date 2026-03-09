@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Lead, LeadStatus } from '../../types'
 import { PRODUCT_CATEGORY_LABELS, LEAD_STATUS_LABELS } from '../../types'
 import ScoreIndicator from '../shared/ScoreIndicator'
@@ -23,6 +24,7 @@ function getDaysAgo(dateString: string): number {
 
 function LeadCard({ lead, onClick }: LeadCardProps) {
   const { updateLeadStatus } = useLeadsStore()
+  const [isDragging, setIsDragging] = useState(false)
   const daysAgo = lead.lastContactedAt ? getDaysAgo(lead.lastContactedAt) : null
 
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -34,8 +36,23 @@ function LeadCard({ lead, onClick }: LeadCardProps) {
     }
   }
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.dataTransfer.setData('leadId', lead.id)
+    setIsDragging(true)
+  }
+
+  const handleDragEnd = () => {
+    setIsDragging(false)
+  }
+
   return (
-    <div className="lead-card" onClick={onClick}>
+    <div
+      className={`lead-card${isDragging ? ' dragging' : ''}`}
+      onClick={onClick}
+      draggable={true}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <div className="lead-card-header">
         <span className="lead-card-brand">{lead.brandName}</span>
         <ScoreIndicator score={lead.score.overall} />

@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { MessageSquare, Inbox, CheckCircle, XCircle } from 'lucide-react'
+import { MessageSquare, Inbox, CheckCircle } from 'lucide-react'
 import DataTable from '../shared/DataTable'
 import type { Column } from '../shared/DataTable'
 import EmptyState from '../shared/EmptyState'
@@ -18,6 +18,8 @@ function OutreachLog() {
   const [channelFilter, setChannelFilter] = useState<string>('all')
   const [responseFilter, setResponseFilter] = useState<string>('all')
   const [templateFilter, setTemplateFilter] = useState<string>('all')
+  const [expandedId, setExpandedId] = useState<string | null>(null)
+  const [responseNotes, setResponseNotes] = useState('')
 
   const filteredRecords = useMemo(() => {
     return records.filter((r) => {
@@ -82,40 +84,67 @@ function OutreachLog() {
       ),
     },
     {
-      key: 'gotResponse',
+      key: 'response',
       label: 'Response',
       render: (r) => (
-        <span
-          className={`badge ${r.gotResponse ? 'badge-done' : 'badge-paused'}`}
-        >
-          {r.gotResponse ? 'Yes' : 'No'}
-        </span>
-      ),
-      sortValue: (r) => (r.gotResponse ? 1 : 0),
-    },
-    {
-      key: 'toggleResponse',
-      label: 'Toggle',
-      render: (r) => (
-        <button
-          className="btn btn-ghost btn-sm"
-          onClick={(e) => {
-            e.stopPropagation()
-            updateRecord(r.id, { gotResponse: !r.gotResponse })
-            showSuccess(r.gotResponse ? 'Marked as no response' : 'Marked as responded')
-          }}
-        >
-          {r.gotResponse ? <XCircle size={14} /> : <CheckCircle size={14} />}
-        </button>
-      ),
-    },
-    {
-      key: 'responseNotes',
-      label: 'Notes',
-      render: (r) => (
-        <span className="text-muted" style={{ maxWidth: 150, display: 'inline-block', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-          {r.responseNotes || '--'}
-        </span>
+        <div style={{ minWidth: 180 }}>
+          {r.gotResponse ? (
+            <div>
+              <span className="badge badge-done" style={{ fontSize: 11 }}>Responded</span>
+              {r.responseNotes && (
+                <div style={{ fontSize: 12, fontStyle: 'italic', color: 'var(--aria-gray-text)', marginTop: 4 }}>
+                  {r.responseNotes}
+                </div>
+              )}
+            </div>
+          ) : expandedId === r.id ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }} onClick={(e) => e.stopPropagation()}>
+              <textarea
+                className="form-textarea"
+                placeholder="What did they say?"
+                value={responseNotes}
+                onChange={(e) => setResponseNotes(e.target.value)}
+                style={{ minHeight: 50, fontSize: 12, padding: 8 }}
+              />
+              <div style={{ display: 'flex', gap: 6 }}>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    updateRecord(r.id, { gotResponse: true, responseNotes })
+                    showSuccess('Response recorded')
+                    setExpandedId(null)
+                    setResponseNotes('')
+                  }}
+                >
+                  Save Response
+                </button>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setExpandedId(null)
+                    setResponseNotes('')
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={(e) => {
+                e.stopPropagation()
+                setExpandedId(r.id)
+                setResponseNotes('')
+              }}
+            >
+              <CheckCircle size={14} />
+              Mark Response
+            </button>
+          )}
+        </div>
       ),
     },
   ]

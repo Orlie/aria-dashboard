@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Target, LayoutGrid, List, Download } from 'lucide-react'
+import { Plus, Target, LayoutGrid, List, Download, Zap, Upload } from 'lucide-react'
 import type { Lead } from '../types'
 import { PRODUCT_CATEGORY_LABELS } from '../types'
 import { useLeadsStore } from '../stores/leads-store'
@@ -15,12 +15,16 @@ import ScoreIndicator from '../components/shared/ScoreIndicator'
 import LeadForm from '../components/leads/LeadForm'
 import LeadBrief from '../components/leads/LeadBrief'
 import LeadPipeline from '../components/leads/LeadPipeline'
+import QuickAddLeadForm from '../components/leads/QuickAddLeadForm'
+import KaloDataImport from '../components/leads/KaloDataImport'
 import { formatPercent, formatCurrency, formatDate } from '../lib/utils'
 import { showSuccess } from '../stores/toast-store'
 
 function LeadsPage() {
   const { leads, addLead, setLeads } = useLeadsStore()
   const [showAddForm, setShowAddForm] = useState(false)
+  const [isQuickAddOpen, setIsQuickAddOpen] = useState(false)
+  const [isImportOpen, setIsImportOpen] = useState(false)
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [viewMode, setViewMode] = useState<'pipeline' | 'table'>('pipeline')
@@ -86,9 +90,17 @@ function LeadsPage() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: 12 }}>
+          <button className="btn btn-ghost" onClick={() => setIsImportOpen(true)}>
+            <Upload size={16} />
+            Import CSV
+          </button>
           <button className="btn btn-secondary" onClick={handleImportDemoLeads}>
             <Download size={16} />
             Import Demo Data
+          </button>
+          <button className="btn btn-secondary" onClick={() => setIsQuickAddOpen(true)}>
+            <Zap size={16} />
+            Quick Add
           </button>
           <button className="btn btn-primary" onClick={() => setShowAddForm(true)}>
             <Plus size={16} />
@@ -172,6 +184,12 @@ function LeadsPage() {
           <LeadForm onSave={handleAddLead} onClose={() => setShowAddForm(false)} />
         </Modal>
       )}
+
+      {/* Quick Add Modal */}
+      <QuickAddLeadForm isOpen={isQuickAddOpen} onClose={() => setIsQuickAddOpen(false)} />
+
+      {/* KaloData CSV Import Modal */}
+      <KaloDataImport isOpen={isImportOpen} onClose={() => setIsImportOpen(false)} />
 
       {/* Lead Brief Modal */}
       {activeLead && (

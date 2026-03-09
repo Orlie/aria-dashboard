@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { Lead, LeadStatus } from '../../types'
 import { LEAD_STATUS_LABELS, PRODUCT_CATEGORY_LABELS } from '../../types'
 import Modal from '../shared/Modal'
@@ -9,6 +10,7 @@ import LeadScoreForm from './LeadScoreForm'
 import { useLeadsStore } from '../../stores/leads-store'
 import { formatCurrency, formatDate } from '../../lib/utils'
 import { showSuccess, showInfo } from '../../stores/toast-store'
+import { MessageSquare } from 'lucide-react'
 
 interface LeadBriefProps {
   lead: Lead
@@ -33,6 +35,7 @@ function LeadBrief({ lead, onClose }: LeadBriefProps) {
   const [fitAnalysis, setFitAnalysis] = useState(lead.brief.fitAnalysis)
   const [pitchAngle, setPitchAngle] = useState(lead.brief.recommendedPitchAngle)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const navigate = useNavigate()
 
   const handleStatusChange = (status: LeadStatus) => {
     updateLeadStatus(lead.id, status)
@@ -229,8 +232,18 @@ function LeadBrief({ lead, onClose }: LeadBriefProps) {
         />
       </div>
 
-      {/* Delete Button */}
-      <div style={{ borderTop: '1px solid var(--aria-gray-border)', paddingTop: 16 }}>
+      {/* Actions */}
+      <div style={{ borderTop: '1px solid var(--aria-gray-border)', paddingTop: 16, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <button
+          className="btn btn-secondary btn-sm"
+          onClick={() => {
+            navigate('/outreach?leadId=' + lead.id)
+            onClose()
+          }}
+        >
+          <MessageSquare size={14} />
+          Draft Message
+        </button>
         <button
           className="btn btn-danger btn-sm"
           onClick={() => setShowDeleteConfirm(true)}

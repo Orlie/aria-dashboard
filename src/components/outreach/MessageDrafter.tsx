@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from 'react'
+import { useState, useMemo, useCallback, useEffect } from 'react'
 import { Copy, Send } from 'lucide-react'
 import { OUTREACH_TEMPLATES, renderTemplate, getUnfilledVariables } from '../../lib/templates'
 import { useLeadsStore } from '../../stores/leads-store'
@@ -9,7 +9,11 @@ import { formatCurrencyCompact } from '../../lib/utils'
 import { showSuccess } from '../../stores/toast-store'
 import './MessageDrafter.css'
 
-function MessageDrafter() {
+interface MessageDrafterProps {
+  initialLeadId?: string
+}
+
+function MessageDrafter({ initialLeadId }: MessageDrafterProps) {
   const { leads } = useLeadsStore()
   const { addRecord } = useOutreachStore()
 
@@ -17,6 +21,13 @@ function MessageDrafter() {
   const [selectedLeadId, setSelectedLeadId] = useState<string>('')
   const [channel, setChannel] = useState<OutreachChannel>('tiktok_dm')
   const [variableOverrides, setVariableOverrides] = useState<Record<string, string>>({})
+
+  // Auto-select lead when initialLeadId is provided
+  useEffect(() => {
+    if (initialLeadId) {
+      setSelectedLeadId(initialLeadId)
+    }
+  }, [initialLeadId])
 
   const selectedTemplate = useMemo(
     () => OUTREACH_TEMPLATES.find((t) => t.id === selectedTemplateId) || OUTREACH_TEMPLATES[0],

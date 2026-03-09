@@ -1,0 +1,198 @@
+/* ============================================================
+   ONBOARDING CHECKLIST
+   ============================================================ */
+
+.onboarding-checklist {
+  padding: 20px;
+  background: var(--aria-bg);
+  border-top: 1px solid var(--aria-gray-border);
+}
+
+/* Progress Header */
+.onboarding-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.onboarding-header-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--aria-white);
+}
+
+.onboarding-header-stats {
+  font-size: 12px;
+  color: var(--aria-gray-text);
+}
+
+/* Progress Bar */
+.onboarding-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: var(--aria-surface);
+  border-radius: 3px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.onboarding-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--aria-yellow);
+  transition: width 0.3s ease;
+}
+
+.onboarding-progress-fill.complete {
+  background: var(--aria-green);
+}
+
+/* Day Groups */
+.onboarding-day-group {
+  margin-bottom: 8px;
+  border: 1px solid var(--aria-gray-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.onboarding-day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--aria-surface);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.onboarding-day-header:hover {
+  background: var(--aria-card-bg-hover);
+}
+
+.onboarding-day-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.onboarding-day-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.onboarding-day-fraction {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.onboarding-day-fraction.all-done {
+  color: var(--aria-green);
+}
+
+.onboarding-day-fraction.partial {
+  color: var(--aria-yellow);
+}
+
+.onboarding-day-fraction.none {
+  color: var(--aria-gray-text);
+}
+
+.onboarding-day-chevron {
+  color: var(--aria-gray-light);
+  transition: transform 0.2s ease;
+}
+
+.onboarding-day-chevron.collapsed {
+  transform: rotate(-90deg);
+}
+
+/* Task List */
+.onboarding-tasks {
+  overflow: hidden;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  max-height: 500px;
+  opacity: 1;
+}
+
+.onboarding-tasks.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
+.onboarding-task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--aria-gray-border);
+  transition: background 0.1s ease;
+}
+
+.onboarding-task:hover {
+  background: var(--aria-card-bg-hover);
+}
+
+/* Custom Checkbox */
+.onboarding-checkbox {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.onboarding-checkbox input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.onboarding-checkbox-visual {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--aria-gray-light);
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  background: transparent;
+}
+
+.onboarding-checkbox input:checked + .onboarding-checkbox-visual {
+  background: var(--aria-yellow);
+  border-color: var(--aria-yellow);
+}
+
+.onboarding-checkbox-check {
+  display: none;
+  color: var(--aria-black);
+}
+
+.onboarding-checkbox input:checked + .onboarding-checkbox-visual .onboarding-checkbox-check {
+  display: block;
+}
+
+.onboarding-task-label {
+  font-size: 13px;
+  color: var(--aria-white);
+  line-height: 1.4;
+}
+
+.onboarding-task-label.completed {
+  color: var(--aria-gray-text);
+  text-decoration: line-through;
+}
+
+/* Start Button */
+.onboarding-start {
+  padding: 24px;
+  text-align: center;
+}

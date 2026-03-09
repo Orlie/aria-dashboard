@@ -80,3 +80,16 @@
   border-color: var(--aria-yellow);
   outline: none;
 }
+
+.lead-card[draggable="true"] {
+  cursor: grab;
+}
+
+.lead-card[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.lead-card.dragging {
+  opacity: 0.4;
+  transform: rotate(2deg);
+}

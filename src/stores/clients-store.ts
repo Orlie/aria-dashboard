@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Client, MonthlyRevenue, Expense, RevenueSnapshot } from '../types'
-import { generateId } from '../lib/utils'
+import type { Client, MonthlyRevenue, Expense, RevenueSnapshot, ClientOnboarding, OnboardingTask } from '../types'
+import { generateId, getToday } from '../lib/utils'
+import { createOnboardingTasks } from '../lib/onboarding-template'
 
 const REVENUE_TARGET = 1_000_000
 
@@ -9,6 +10,7 @@ interface ClientsState {
   clients: Client[]
   monthlyRevenue: MonthlyRevenue[]
   expenses: Expense[]
+  onboardings: ClientOnboarding[]
 
   setClients: (clients: Client[]) => void
   addClient: (client: Omit<Client, 'id' | 'monthlyRevenue'>) => void
@@ -22,6 +24,10 @@ interface ClientsState {
 
   getRevenueSnapshot: () => RevenueSnapshot
   getActiveClients: () => Client[]
+
+  startOnboarding: (clientId: string, assignedHost?: string) => void
+  updateOnboardingTask: (clientId: string, taskId: string, updates: Partial<OnboardingTask>) => void
+  getOnboarding: (clientId: string) => ClientOnboarding | undefined
 }
 
 function computeClientRevenue(client: Omit<Client, 'id' | 'monthlyRevenue'> & { id?: string }): number {
@@ -34,6 +40,7 @@ export const useClientsStore = create<ClientsState>()(
       clients: [],
       monthlyRevenue: [],
       expenses: [],
+      onboardings: [],
 
       setClients: (clients) => set({ clients }),
 
@@ -111,6 +118,39 @@ export const useClientsStore = create<ClientsState>()(
 
       getActiveClients: () => {
         return get().clients.filter((c) => c.status === 'active')
+      },
+
+      startOnboarding: (clientId, assignedHost = '') => {
+        const existing = get().onboardings.find((o) => o.clientId === clientId)
+        if (existing) return
+        const onboarding: ClientOnboarding = {
+          clientId,
+          startDate: getToday(),
+          assignedHost,
+          tasks: createOnboardingTasks(),
+        }
+        set((state) => ({ onboardings: [...state.onboardings, onboarding] }))
+      },
+
+      updateOnboardingTask: (clientId, taskId, updates) => {
+        set((state) => ({
+          onboardings: state.onboardings.map((o) =>
+            o.clientId === clientId
+              ? {
+                  ...o,
+                  tasks: o.tasks.map((t) =>
+                    t.id === taskId
+                      ? { ...t, ...updates, completedAt: updates.completed ? getToday() : t.completedAt }
+                      : t
+                  ),
+                }
+              : o
+          ),
+        }))
+      },
+
+      getOnboarding: (clientId) => {
+        return get().onboardings.find((o) => o.clientId === clientId)
       },
     }),
     { name: 'aria-clients' }

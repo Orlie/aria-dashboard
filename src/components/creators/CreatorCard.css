@@ -1,0 +1,86 @@
+.creator-card {
+  background: var(--aria-card-bg);
+  border: 1px solid var(--aria-gray-border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.creator-card:hover {
+  border-color: var(--aria-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.creator-card[draggable="true"] {
+  cursor: grab;
+}
+
+.creator-card[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.creator-card.dragging {
+  opacity: 0.4;
+  transform: rotate(2deg);
+}
+
+.creator-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.creator-card-handle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--aria-yellow);
+}
+
+.creator-card-gmv {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--aria-green);
+}
+
+.creator-card-name {
+  font-size: 12px;
+  color: var(--aria-gray-text);
+  margin-bottom: 6px;
+}
+
+.creator-card-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--aria-gray-text);
+  margin-bottom: 6px;
+}
+
+.creator-card-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.creator-card-badge--overdue {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--aria-red);
+}
+
+.creator-card-badge--due-soon {
+  background: rgba(255, 235, 3, 0.12);
+  color: var(--aria-yellow);
+}
+
+.creator-card-niche {
+  font-size: 10px;
+  color: var(--aria-gray-light);
+  margin-top: 4px;
+  text-transform: capitalize;
+}

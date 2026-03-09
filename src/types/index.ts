@@ -226,10 +226,44 @@ export interface SyncState {
 }
 
 // ============================================================
+// AD CAMPAIGN TYPES
+// ============================================================
+
+export type AdCampaignStatus = 'active' | 'paused' | 'ended'
+
+export type AdAlert = 'pause_recommended' | 'scale_recommended' | 'over_budget' | 'good_performance' | null
+
+export interface AdCampaign {
+  id: string
+  clientId: string
+  campaignName: string
+  status: AdCampaignStatus
+  dailyBudget: number
+  startDate: string
+  endDate?: string
+  notes: string
+  createdAt: string
+}
+
+export interface AdDailyLog {
+  id: string
+  campaignId: string
+  clientId: string
+  date: string // YYYY-MM-DD
+  spend: number
+  gmv: number
+  roas: number // computed: gmv / spend, but allow manual override
+  orders: number
+  impressions: number
+  notes: string
+  createdAt: string
+}
+
+// ============================================================
 // APP-LEVEL TYPES
 // ============================================================
 
-export type ModuleId = 'leads' | 'revenue' | 'outreach' | 'settings'
+export type ModuleId = 'leads' | 'revenue' | 'outreach' | 'ads' | 'analytics' | 'reports' | 'settings'
 
 // ============================================================
 // PERSONAL FINANCE TYPES
@@ -258,4 +292,119 @@ export interface MonthlyFinance {
   endingBalance: number
   expenses: PersonalExpense[]
   income: PersonalIncome[]
+}
+
+// ============================================================
+// LIVE SESSION TYPES
+// ============================================================
+
+export interface LiveSession {
+  id: string
+  clientId: string
+  date: string // YYYY-MM-DD
+  durationMinutes: number
+  peakViewers: number
+  averageViewers: number
+  totalOrders: number
+  gmv: number
+  topProduct: string
+  hostName: string
+  notes: string
+  createdAt: string
+}
+
+// ============================================================
+// CREATOR PROGRAM TYPES
+// ============================================================
+
+export type CreatorStatus =
+  | 'identified'
+  | 'outreached'
+  | 'replied'
+  | 'vetting'
+  | 'approved'
+  | 'sample_shipped'
+  | 'content_due'
+  | 'content_posted'
+  | 'active_partner'
+  | 'paused'
+  | 'removed'
+
+export const CREATOR_STATUS_LABELS: Record<CreatorStatus, string> = {
+  identified: 'Identified',
+  outreached: 'Outreached',
+  replied: 'Replied',
+  vetting: 'Vetting',
+  approved: 'Approved',
+  sample_shipped: 'Sample Shipped',
+  content_due: 'Content Due',
+  content_posted: 'Content Posted',
+  active_partner: 'Active Partner',
+  paused: 'Paused',
+  removed: 'Removed',
+}
+
+export interface Creator {
+  id: string
+  clientId: string
+  tiktokHandle: string
+  fullName: string
+  followerCount: number
+  engagementRate: number
+  niche: string
+  status: CreatorStatus
+  shippingAddress: string
+  productSent: string
+  sampleShippedDate?: string
+  contentDueDate?: string
+  contentPostedDate?: string
+  contentUrl?: string
+  commissionRate: number
+  totalGmv: number
+  notes: string
+  createdAt: string
+  updatedAt: string
+}
+
+// ============================================================
+// WEEKLY REPORT TYPES
+// ============================================================
+
+export interface WeeklyReportSection {
+  title: string
+  content: string
+}
+
+export interface WeeklyReport {
+  id: string
+  clientId: string
+  clientName: string
+  weekStart: string
+  weekEnd: string
+  generatedAt: string
+  sections: WeeklyReportSection[]
+  manualWins: string
+  manualNextWeek: string
+  manualNeeded: string
+}
+
+// ============================================================
+// CLIENT ONBOARDING TYPES
+// ============================================================
+
+export interface OnboardingTask {
+  id: string
+  day: number // 0, 1, 2, 3, 4, 5, 6, 7, 14 (week 2)
+  label: string
+  completed: boolean
+  completedAt?: string
+  notes?: string
+}
+
+export interface ClientOnboarding {
+  clientId: string
+  startDate: string // YYYY-MM-DD, the day the contract was signed
+  assignedHost: string
+  tasks: OnboardingTask[]
+  completedAt?: string // set when all day-7 tasks are done
 }

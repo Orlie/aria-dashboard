@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Send } from 'lucide-react'
+import DailyActivityBar from '../components/outreach/DailyActivityBar'
 import MessageDrafter from '../components/outreach/MessageDrafter'
 import FollowUpQueue from '../components/outreach/FollowUpQueue'
 import OutreachLog from '../components/outreach/OutreachLog'
@@ -8,7 +10,16 @@ import TimingRecommender from '../components/outreach/TimingRecommender'
 type OutreachTab = 'templates' | 'followups' | 'log'
 
 function OutreachPage() {
+  const [searchParams] = useSearchParams()
+  const leadIdFromUrl = searchParams.get('leadId') || undefined
   const [activeTab, setActiveTab] = useState<OutreachTab>('templates')
+
+  // Auto-switch to templates tab when leadId is in URL
+  useEffect(() => {
+    if (leadIdFromUrl) {
+      setActiveTab('templates')
+    }
+  }, [leadIdFromUrl])
 
   const tabs: { id: OutreachTab; label: string }[] = [
     { id: 'templates', label: 'Templates' },
@@ -30,6 +41,8 @@ function OutreachPage() {
         </div>
       </div>
 
+      <DailyActivityBar />
+
       <div className="tab-bar">
         {tabs.map((tab) => (
           <button
@@ -45,7 +58,7 @@ function OutreachPage() {
       {activeTab === 'templates' && (
         <div className="tab-content-enter" key={activeTab}>
           <TimingRecommender />
-          <MessageDrafter />
+          <MessageDrafter initialLeadId={leadIdFromUrl} />
         </div>
       )}
 
