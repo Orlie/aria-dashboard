@@ -95,6 +95,29 @@
   color: var(--aria-green);
 }
 
+/* Empty Section State */
+.analytics-empty-section {
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.analytics-empty-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--aria-gray-text);
+  margin-bottom: 8px;
+}
+
+.analytics-empty-hint {
+  font-size: 13px;
+  color: var(--aria-gray-light);
+  line-height: 1.6;
+}
+
+.analytics-empty-hint strong {
+  color: var(--aria-yellow);
+}
+
 /* Responsive */
 @media (max-width: 767px) {
   .analytics-charts-row {

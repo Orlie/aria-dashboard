@@ -23,7 +23,7 @@ import type { LeadStatus } from '../types'
 import './AnalyticsPage.css'
 
 const LEAD_STATUS_ORDER: LeadStatus[] = [
-  'new', 'contacted', 'replied', 'meeting_set', 'negotiating', 'closed', 'active',
+  'new', 'contacted', 'replied', 'meeting_set', 'negotiating', 'closed', 'active', 'churned',
 ]
 
 const LEAD_STATUS_DISPLAY: Record<string, string> = {
@@ -34,10 +34,11 @@ const LEAD_STATUS_DISPLAY: Record<string, string> = {
   negotiating: 'Negotiating',
   closed: 'Closed',
   active: 'Active',
+  churned: 'Churned',
 }
 
 const FUNNEL_COLORS = [
-  '#666666', '#888888', '#aaaaaa', '#cccc00', '#dddd00', '#FFEB03', '#22c55e',
+  '#666666', '#888888', '#aaaaaa', '#cccc00', '#dddd00', '#FFEB03', '#22c55e', '#ef4444',
 ]
 
 const SOURCE_COLORS = ['#FFEB03', '#3b82f6', '#22c55e', '#a855f7']
@@ -53,7 +54,8 @@ function getDaysAgo(days: number): string {
 function AnalyticsPage() {
   const [timeRange, setTimeRange] = useState<TimeRange>('all')
   const allLeads = useLeadsStore((s) => s.leads)
-  const { clients, monthlyRevenue } = useClientsStore()
+  const clients = useClientsStore((s) => s.clients)
+  const monthlyRevenue = useClientsStore((s) => s.monthlyRevenue)
   const snapshot = useClientsStore((s) => s.getRevenueSnapshot())
   const sessions = useLiveSessionsStore((s) => s.sessions)
   const { dailyLogs, campaigns } = useAdsStore()
@@ -116,8 +118,8 @@ function AnalyticsPage() {
   }, [leads])
 
   // ─── Client Performance Data ─────────────────────────────────
-  const activeClients = clients.filter((c) => c.status === 'active')
-  const thirtyDaysAgo = getDaysAgo(30)
+  const activeClients = useMemo(() => clients.filter((c) => c.status === 'active'), [clients])
+  const thirtyDaysAgo = useMemo(() => getDaysAgo(30), [])
 
   const clientPerformance = useMemo(() => {
     return activeClients.map((client) => {
@@ -249,17 +251,22 @@ function AnalyticsPage() {
       </div>
 
       {/* MRR Trend */}
-      {monthlyRevenue.length > 0 && (
-        <div className="section">
-          <h3 className="section-title">MRR Trend</h3>
+      <div className="section">
+        <h3 className="section-title">MRR Trend</h3>
+        {monthlyRevenue.length > 0 ? (
           <RevenueTrendChart data={monthlyRevenue} />
-        </div>
-      )}
+        ) : (
+          <div className="analytics-empty-section card">
+            <p className="analytics-empty-title">No revenue data yet</p>
+            <p className="analytics-empty-hint">Add monthly revenue entries in the <strong>Revenue</strong> page to track your MRR trend.</p>
+          </div>
+        )}
+      </div>
 
       {/* Client Performance Table */}
-      {clientPerformance.length > 0 && (
-        <div className="section">
-          <h3 className="section-title">Client Performance</h3>
+      <div className="section">
+        <h3 className="section-title">Client Performance (Last 30 Days)</h3>
+        {clientPerformance.length > 0 ? (
           <div className="table-wrapper">
             <table className="data-table">
               <thead>
@@ -296,8 +303,13 @@ function AnalyticsPage() {
               </tbody>
             </table>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="analytics-empty-section card">
+            <p className="analytics-empty-title">No active clients yet</p>
+            <p className="analytics-empty-hint">Add clients with <strong>Active</strong> status in the <strong>Revenue</strong> page to see performance metrics here.</p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
